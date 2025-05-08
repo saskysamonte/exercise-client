@@ -2,14 +2,41 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthHeaders } from "../../store/auth-context";
 import useProfile from "../../hooks/useProfile";
-
 import classes from "../../components/PageComponent.module.css";
 
 export default function Profile({ activeMenu }) {
   const headers = useAuthHeaders();
   const [reload, setReload] = useState(false);
   const { profile, loadingProfile } = useProfile(null, headers, reload);
-  const [profileData, setProfileData] = useState({});
+  const [profileData, setProfileData] = useState({
+    salutation: "",
+    first_name: "",
+    last_name: "",
+    email_address: "",
+    gender: "",
+    date_of_birth: "",
+    home_address: {
+      street: "",
+      city: "",
+      state: "",
+      postal_code: "",
+      country: "",
+    },
+    marital_status: "",
+    avatar: "",
+    spouse: {
+      salutation: "",
+      first_name: "",
+      last_name: "",
+    },
+    personal_preferences: {
+      hobbies: [],
+      interests: [],
+      sports: [],
+      musics: [],
+      movies: [],
+    },
+  });
   const [originalProfileData, setOriginalProfileData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
@@ -27,9 +54,73 @@ export default function Profile({ activeMenu }) {
   }, [profile]);
 
   const handleInputChange = (field, value) => {
+    if (field.startsWith("home_address")) {
+      const nestedField = field.split(".")[1];
+      setProfileData((prev) => ({
+        ...prev,
+        home_address: {
+          ...prev.home_address,
+          [nestedField]: value,
+        },
+      }));
+    } else if (field.startsWith("spouse")) {
+      const nestedField = field.split(".")[1];
+      setProfileData((prev) => ({
+        ...prev,
+        spouse: {
+          ...prev.spouse,
+          [nestedField]: value,
+        },
+      }));
+    } else if (field.startsWith("personal_preferences")) {
+      const nestedField = field.split(".")[1];
+      setProfileData((prev) => ({
+        ...prev,
+        personal_preferences: {
+          ...prev.personal_preferences,
+          [nestedField]: value,
+        },
+      }));
+    } else {
+      setProfileData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
+  };
+
+  const handleAddItem = (field) => {
     setProfileData((prev) => ({
       ...prev,
-      [field]: value,
+      personal_preferences: {
+        ...prev.personal_preferences,
+        [field]: [...prev.personal_preferences[field], ""],
+      },
+    }));
+  };
+
+  const handleRemoveItem = (field, index) => {
+    const updatedItems = [...profileData.personal_preferences[field]];
+    updatedItems.splice(index, 1);
+    setProfileData((prev) => ({
+      ...prev,
+      personal_preferences: {
+        ...prev.personal_preferences,
+        [field]: updatedItems,
+      },
+    }));
+  };
+
+  const handleItemChange = (field, index, value) => {
+    const updatedItems = [...profileData.personal_preferences[field]];
+    updatedItems[index] = value;
+    setProfileData((prev) => ({
+      ...prev,
+      personal_preferences: {
+        ...prev.personal_preferences,
+        [field]: updatedItems,
+      },
     }));
   };
 
@@ -55,9 +146,6 @@ export default function Profile({ activeMenu }) {
             <option value="mr">Mr.</option>
             <option value="ms">Ms.</option>
             <option value="mrs">Mrs.</option>
-            <option value="dr">Dr.</option>
-            <option value="prof">Prof.</option>
-            <option value="eng">Engineer</option>
           </select>
           {errors.salutation && (
             <p className={classes.error}>{errors.salutation}</p>
@@ -74,7 +162,7 @@ export default function Profile({ activeMenu }) {
         <>
           <input
             className={errors.first_name && classes.error}
-            value={profileData.first_name || ""}
+            value={profileData?.first_name || ""}
             onChange={(e) => handleInputChange("first_name", e.target.value)}
           />
           {errors.first_name && (
@@ -166,6 +254,71 @@ export default function Profile({ activeMenu }) {
           {new Date(profileData.date_of_birth).toLocaleDateString() || "-"}
         </span>
       )}
+
+      <h4>Home Address</h4>
+      {loadingProfile ? (
+        "..."
+      ) : isEditing ? (
+        <>
+          <input
+            className={errors.street && classes.error}
+            placeholder="Street"
+            value={profileData.home_address?.street || ""}
+            onChange={(e) =>
+              handleInputChange("home_address.street", e.target.value)
+            }
+          />
+          {errors.street && <p className={classes.error}>{errors.street}</p>}
+
+          <input
+            className={errors.city && classes.error}
+            placeholder="City"
+            value={profileData.home_address?.city || ""}
+            onChange={(e) =>
+              handleInputChange("home_address.city", e.target.value)
+            }
+          />
+          {errors.city && <p className={classes.error}>{errors.city}</p>}
+
+          <input
+            className={errors.state && classes.error}
+            placeholder="State"
+            value={profileData.home_address?.state || ""}
+            onChange={(e) =>
+              handleInputChange("home_address.state", e.target.value)
+            }
+          />
+          {errors.state && <p className={classes.error}>{errors.state}</p>}
+
+          <input
+            className={errors.postal_code && classes.error}
+            placeholder="Postal Code"
+            value={profileData.home_address?.postal_code || ""}
+            onChange={(e) =>
+              handleInputChange("home_address.postal_code", e.target.value)
+            }
+          />
+          {errors.postal_code && (
+            <p className={classes.error}>{errors.postal_code}</p>
+          )}
+
+          <input
+            className={errors.country && classes.error}
+            placeholder="Country"
+            value={profileData.home_address?.country || ""}
+            onChange={(e) =>
+              handleInputChange("home_address.country", e.target.value)
+            }
+          />
+          {errors.country && <p className={classes.error}>{errors.country}</p>}
+        </>
+      ) : (
+        <span>
+          {profileData.home_address
+            ? `${profileData.home_address.street}, ${profileData.home_address.city}, ${profileData.home_address.state}, ${profileData.home_address.postal_code}, ${profileData.home_address.country}`
+            : "Not specified"}
+        </span>
+      )}
     </>
   );
 
@@ -179,7 +332,9 @@ export default function Profile({ activeMenu }) {
           <select
             className={errors.marital_status && classes.error}
             value={profileData.marital_status || ""}
-            onChange={(e) => handleInputChange("marital_status", e.target.value)}
+            onChange={(e) =>
+              handleInputChange("marital_status", e.target.value)
+            }
           >
             <option value="">Select Marital Status</option>
             <option value="single">Single</option>
@@ -194,13 +349,263 @@ export default function Profile({ activeMenu }) {
       ) : (
         <span>{capitalizeString(profileData.marital_status) || "N/A"}</span>
       )}
+
+      {/* Spouse Details Section */}
+      <h4>Spouse Details</h4>
+      {loadingProfile ? (
+        "..."
+      ) : isEditing ? (
+        <>
+          <select
+            className={errors.spouse_salutation && classes.error}
+            value={profileData.spouse.salutation || ""}
+            onChange={(e) =>
+              handleInputChange("spouse.salutation", e.target.value)
+            }
+          >
+            <option value="">Select Salutation</option>
+            <option value="mr">Mr.</option>
+            <option value="ms">Ms.</option>
+            <option value="mrs">Mrs.</option>
+          </select>
+          {errors.spouse_salutation && (
+            <p className={classes.error}>{errors.spouse_salutation}</p>
+          )}
+
+          <input
+            className={errors.spouse_first_name && classes.error}
+            placeholder="Spouse First Name"
+            value={profileData.spouse.first_name || ""}
+            onChange={(e) =>
+              handleInputChange("spouse.first_name", e.target.value)
+            }
+          />
+          {errors.spouse_first_name && (
+            <p className={classes.error}>{errors.spouse_first_name}</p>
+          )}
+
+          <input
+            className={errors.spouse_last_name && classes.error}
+            placeholder="Spouse Last Name"
+            value={profileData.spouse.last_name || ""}
+            onChange={(e) =>
+              handleInputChange("spouse.last_name", e.target.value)
+            }
+          />
+          {errors.spouse_last_name && (
+            <p className={classes.error}>{errors.spouse_last_name}</p>
+          )}
+        </>
+      ) : (
+        <span>
+          {profileData.spouse.first_name
+            ? `${
+                capitalizeString(profileData.spouse.salutation) + "." || ""
+              } ${capitalizeString(profileData.spouse.first_name)} ${
+                capitalizeString(profileData.spouse.last_name) || ""
+              }`
+            : "Not specified"}
+        </span>
+      )}
     </>
   );
 
-  const renderPreferences = () => (
+  const renderPersonalPreferences = () => (
     <>
-      <h4>Preferred Contact Method</h4>
-      {loadingProfile ? "..." : <span>-</span>}
+      <h4>Personal Preferences</h4>
+
+      <h5>Hobbies</h5>
+      {loadingProfile ? (
+        "..."
+      ) : isEditing ? (
+        <>
+          {profileData.personal_preferences.hobbies.map((hobby, index) => (
+            <div key={index} className={classes.preferenceItems}>
+              <input
+                className={errors.hobbies && classes.error}
+                value={hobby}
+                onChange={(e) =>
+                  handleItemChange("hobbies", index, e.target.value)
+                }
+              />
+              <button
+                onClick={() => handleRemoveItem("hobbies", index)}
+                className={classes.removeButton}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => handleAddItem("hobbies")}
+            className={classes.addButton}
+          >
+            Add Hobby
+          </button>
+          {errors.hobbies && <p className={classes.error}>{errors.hobbies}</p>}
+        </>
+      ) : (
+        <span>
+          {profileData.personal_preferences.hobbies.length
+            ? profileData.personal_preferences.hobbies.join(", ")
+            : "Not specified"}
+        </span>
+      )}
+
+      <h5>Interests</h5>
+      {loadingProfile ? (
+        "..."
+      ) : isEditing ? (
+        <>
+          {profileData.personal_preferences.interests.map((interest, index) => (
+            <div key={index} className={classes.preferenceItems}>
+              <input
+                className={errors.interests && classes.error}
+                value={interest}
+                onChange={(e) =>
+                  handleItemChange("interests", index, e.target.value)
+                }
+              />
+              <button
+                onClick={() => handleRemoveItem("interests", index)}
+                className={classes.removeButton}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => handleAddItem("interests")}
+            className={classes.addButton}
+          >
+            Add Interest
+          </button>
+          {errors.interests && (
+            <p className={classes.error}>{errors.interests}</p>
+          )}
+        </>
+      ) : (
+        <span>
+          {profileData.personal_preferences.interests.length
+            ? profileData.personal_preferences.interests.join(", ")
+            : "Not specified"}
+        </span>
+      )}
+
+      <h5>Sports</h5>
+      {loadingProfile ? (
+        "..."
+      ) : isEditing ? (
+        <>
+          {profileData.personal_preferences.sports.map((sport, index) => (
+            <div key={index} className={classes.preferenceItems}>
+              <input
+                className={errors.sports && classes.error}
+                value={sport}
+                onChange={(e) =>
+                  handleItemChange("sports", index, e.target.value)
+                }
+              />
+              <button
+                onClick={() => handleRemoveItem("sports", index)}
+                className={classes.removeButton}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => handleAddItem("sports")}
+            className={classes.addButton}
+          >
+            Add Sport
+          </button>
+          {errors.sports && <p className={classes.error}>{errors.sports}</p>}
+        </>
+      ) : (
+        <span>
+          {profileData.personal_preferences.sports.length
+            ? profileData.personal_preferences.sports.join(", ")
+            : "Not specified"}
+        </span>
+      )}
+
+      {/* Musics */}
+      <h5>Musics</h5>
+      {loadingProfile ? (
+        "..."
+      ) : isEditing ? (
+        <>
+          {profileData.personal_preferences.musics.map((music, index) => (
+            <div key={index} className={classes.preferenceItems}>
+              <input
+                className={errors.musics && classes.error}
+                value={music}
+                onChange={(e) =>
+                  handleItemChange("musics", index, e.target.value)
+                }
+              />
+              <button
+                onClick={() => handleRemoveItem("musics", index)}
+                className={classes.removeButton}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => handleAddItem("musics")}
+            className={classes.addButton}
+          >
+            Add Music
+          </button>
+          {errors.musics && <p className={classes.error}>{errors.musics}</p>}
+        </>
+      ) : (
+        <span>
+          {profileData.personal_preferences.musics.length
+            ? profileData.personal_preferences.musics.join(", ")
+            : "Not specified"}
+        </span>
+      )}
+
+      <h5>Movies</h5>
+      {loadingProfile ? (
+        "..."
+      ) : isEditing ? (
+        <>
+          {profileData.personal_preferences.movies.map((movie, index) => (
+            <div key={index} className={classes.preferenceItems}>
+              <input
+                className={errors.movies && classes.error}
+                value={movie}
+                onChange={(e) =>
+                  handleItemChange("movies", index, e.target.value)
+                }
+              />
+              <button
+                onClick={() => handleRemoveItem("movies", index)}
+                className={classes.removeButton}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => handleAddItem("movies")}
+            className={classes.addButton}
+          >
+            Add Movie
+          </button>
+          {errors.movies && <p className={classes.error}>{errors.movies}</p>}
+        </>
+      ) : (
+        <span>
+          {profileData.personal_preferences.movies.length
+            ? profileData.personal_preferences.movies.join(", ")
+            : "Not specified"}
+        </span>
+      )}
     </>
   );
 
@@ -213,7 +618,7 @@ export default function Profile({ activeMenu }) {
       case "spouse":
         return renderSpouseDetails();
       case "preferences":
-        return renderPreferences();
+        return renderPersonalPreferences();
       default:
         return <span>Unknown section</span>;
     }
@@ -221,50 +626,60 @@ export default function Profile({ activeMenu }) {
 
   const handleSave = async () => {
     const newErrors = {};
-  
-    // Check validation based on activeMenu
+
     if (activeMenu === "basic") {
       if (!profileData.salutation) {
         newErrors.salutation = "Please select your salutation";
       }
-  
       if (!profileData.first_name) {
         newErrors.first_name = "Please enter your first name";
       }
-  
       if (!profileData.last_name) {
         newErrors.last_name = "Please enter your last name";
       }
-  
       if (!profileData.email_address) {
         newErrors.email_address = "Please enter your email address";
       }
     }
-  
-    if (activeMenu === "additional") {
-      if (!profileData.gender) {
-        newErrors.gender = "Please select your gender";
-      }
-  
-      if (!profileData.date_of_birth) {
-        newErrors.date_of_birth = "Please enter your date of birth";
-      }
-    }
-  
+
     if (activeMenu === "spouse") {
-      if (!profileData.marital_status) {
-        newErrors.marital_status = "Please select your marital status";
+      if (!profileData.spouse.salutation) {
+        newErrors.spouse_salutation = "Please select spouse's salutation";
+      }
+      if (!profileData.spouse.first_name) {
+        newErrors.spouse_first_name = "Please enter spouse's first name";
+      }
+      if (!profileData.spouse.last_name) {
+        newErrors.spouse_last_name = "Please enter spouse's last name";
       }
     }
-  
-    // If there are errors, show them and stop the save
+
+    if (activeMenu === "preferences") {
+      if (profileData.personal_preferences.hobbies.length === 0) {
+        newErrors.hobbies = "Please add at least one hobby";
+      }
+      if (profileData.personal_preferences.interests.length === 0) {
+        newErrors.interests = "Please add at least one interest";
+      }
+      if (profileData.personal_preferences.sports.length === 0) {
+        newErrors.sports = "Please add at least one sport";
+      }
+      if (profileData.personal_preferences.musics.length === 0) {
+        newErrors.musics = "Please add at least one music";
+      }
+      if (profileData.personal_preferences.movies.length === 0) {
+        newErrors.movies = "Please add at least one movie";
+      }
+    }
+
+    // If there are errors, display them and don't proceed with saving
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-  
+
     try {
-      // Only update the fields that were edited for the current section
+      // Send only the changed data to the server
       await axios.put(
         `${process.env.REACT_APP_API_USER_PROFILE}`,
         profileData,
@@ -322,17 +737,15 @@ export default function Profile({ activeMenu }) {
           {renderSection()}
           {isEditing && (
             <>
-               <p className={classes.editNote}>
-                  * Mandatory field
-                </p>
-                <div className={classes.buttons}>
-                  <button onClick={handleSave} className={classes.saveButton}>
-                    Save & Update
-                  </button>
-                  <button onClick={handleCancel} className={classes.cancelButton}>
-                    Cancel
-                  </button>
-                </div>
+              <p className={classes.editNote}>* Mandatory field</p>
+              <div className={classes.buttons}>
+                <button onClick={handleSave} className={classes.saveButton}>
+                  Save & Update
+                </button>
+                <button onClick={handleCancel} className={classes.cancelButton}>
+                  Cancel
+                </button>
+              </div>
             </>
           )}
         </div>

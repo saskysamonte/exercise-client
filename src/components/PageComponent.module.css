@@ -192,7 +192,8 @@
 }
 
 .profileDetails .details.isEditing select.error,
-.profileDetails .details.isEditing input.error {
+.profileDetails .details.isEditing input.error,
+.profileDetails .details.isEditing textarea.error {
     border: 1px solid red;
 }
 
@@ -203,7 +204,8 @@
 }
 
 .profileDetails .details.isEditing select,
-.profileDetails .details.isEditing input {
+.profileDetails .details.isEditing input,
+.profileDetails .details.isEditing textarea {
     width: 100%;
     padding: 10px;
     color: #545454;
@@ -231,6 +233,34 @@
     color: #ffffff;
     background-color: #757575;
     border: 1px solid #757575;
+}
+
+.preferenceItems {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.preferenceItems  button {
+    cursor: pointer;
+    font-size: 12px;
+    text-transform: normal;
+    background-color: transparent;
+    padding: 0px 4px;
+    border: none;
+    border-radius: 4px;
+    border: 1px solid #333333;
+}
+
+.addButton {
+    cursor: pointer;
+    font-size: 12px;
+    text-transform: normal;
+    background-color: #FFFFFF;
+    padding: 8px 4px;
+    border: none;
+    border-radius: 4px;
+    border: 1px solid #333333;
 }
 
 .pageFooter {
