@@ -1,0 +1,187 @@
+.loginPage {
+    background-color: #b5b0ad;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+}
+
+.loginPage h2 {
+    font-size: 40px;
+    font-weight: normal;
+}
+
+.loginPage h2 span.highlight {
+    font-weight: bold;
+}
+
+.loginPageHeader {
+    margin-bottom: 10px;
+}
+
+.loginPageForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.loginPageForm .fieldRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.loginPageForm .fieldRow label {
+    font-size: 14px;
+    width: 200px;
+    margin-bottom: 5px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.loginPageForm .fieldRow input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    background-color: #b5b0a6;
+}
+
+.loginPageForm .inputWrapper {
+    width: 100%;
+    position: relative;
+}
+
+.loginPageForm .fieldRememberMe {
+    margin-left: 152px;
+}
+
+.loginPageForm .fieldRememberMe label {
+    display: flex;
+    gap: 10px;
+}
+
+.loginPageForm .fieldButton {
+    margin-left: 150px;
+}
+
+.loginPageForm .fieldButton button {
+    font-size: 16px;
+    cursor: pointer;
+    color: #FFFFFF;
+    background-color: #000000;
+    padding: 8px 40px;
+    border-radius: 0px;
+    border: none;
+}
+
+.loginPageForm .fieldRowLink {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.loginPageForm .fieldRowLink label {
+    font-size: 14px;
+    width: 200px;
+    margin-left: -10px;
+    text-align: right;
+}
+
+.loginPageForm .fieldRowLink a {
+    width: 100%;
+    color: #333333;
+    font-size: 14px;
+    text-decoration: underline;
+    margin-left: 10px;
+}
+
+.loginErrorMessage {
+    position: fixed;
+    left: 50%;
+    bottom: 0px;
+    width: 500px;
+    margin: 0;
+    padding: 2px 10px;
+    transform: translateX(-50%);
+    background-color: #FF0000;
+    border-radius: 8px 8px 0px 0px;
+}
+
+.loginErrorMessage p {
+    font-size: 14px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+
+@media (max-width: 768px) {
+    .loginPage h2 {
+        font-size: 28px;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .loginPageForm {
+        padding: 0 20px;
+        max-width: 100%;
+    }
+
+    .loginPageForm .fieldRow {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .loginPageForm .fieldRow label {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    .loginPageForm .inputWrapper {
+        width: 100%;
+    }
+
+    .loginPageForm .fieldRememberMe {
+        margin-left: 0;
+    }
+
+    .loginPageForm .fieldButton {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .loginPageForm .fieldButton button {
+        width: 100%;
+    }
+
+    .loginPageForm .fieldRowLink {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 10px;
+    }
+
+    .loginPageForm .fieldRowLink label {
+        width: 100%;
+        text-align: left;
+        margin-left: 0;
+    }
+
+    .loginPageForm .fieldRowLink a {
+        margin-left: 0;
+        margin-top: 5px;
+        width: auto;
+    }
+
+    .loginErrorMessage {
+        width: 90%;
+        font-size: 14px;
+        left: 5%;
+    }
+}

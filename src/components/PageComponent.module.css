@@ -1,0 +1,343 @@
+.pageWrapper {
+    padding: 40px 40px;
+    background-image: url('../../public/my-profile-bg.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+.pageHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.pageHeader h1,
+.pageHeader h2 {
+    margin: 0;
+}
+
+.pageHeader .headerLogo {
+    border: 1px solid #333333;
+    padding: 10px 40px;
+}
+
+.pageHeader .navbar {
+    cursor: pointer;
+}
+
+.pageHeader .slideMenu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    color: #333333;
+    background-color: #ddeef8;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.pageHeader .slideMenu.open {
+    left: 0;
+}
+
+.pageHeader .menuItems {
+    list-style-type: none;
+    padding: 20px;
+}
+
+.pageHeader .menuItems li {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #333333;
+}
+
+.pageHeader .menuItems li:hover {
+    color: #ffffff;
+    background-color: #333333;
+}
+
+.pageContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.pageContainer .sidebarMenu {
+    width: 20%;
+    padding: 0px;
+    margin: 80px 0px;
+}
+
+.pageContainer .sidebarMenu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.pageContainer .sidebarMenu ul li {
+    cursor: pointer;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+
+.pageContainer .sidebarMenu ul li.active {
+    font-weight: bold;
+    border-bottom: 2px solid #333333;
+}
+
+.pageContainer .pageContent {
+    width: 80%;
+    padding: 0px;
+}
+
+.pageContainer .pageContent .profile {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pageContent .profileHeading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pageContent .profileHeading .line {
+    top: 5px;
+    position: relative;
+    flex-grow: 1;
+    height: 2px;
+    background-color: #333333;
+    margin: 0 20px;
+}
+
+.pageContent .profileHeading button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.pageContent .profileHeading button span {
+    color: #333333;
+}
+
+.pageContent .profileHeading button span.text {
+    text-decoration: underline;
+}
+
+.pageContent .profileHeading button i {
+    font-size: 18px;
+}
+
+.pageContent .profile h1 {
+    font-weight: normal;
+}
+
+.pageContent .profile h1 .highlight {
+    font-weight: bold;
+}
+
+.pageContent .profileDetails {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.profileDetails .avatar {
+    width: 180px;
+    border-radius: 50%;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.profileDetails .avatar img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+.profileDetails .details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.profileDetails .details h4 {
+    margin-top: 0;
+    margin-bottom: 0px;
+}
+
+.profileDetails .details span {
+    margin-bottom: 10px;
+}
+
+.profileDetails .details.isEditing {
+    width: 100%;
+    gap: 20px;
+}
+
+.profileDetails .details.isEditing p.editNote {
+    font-size: 14px;
+    font-style: italic;
+}
+
+.profileDetails .details.isEditing select.error,
+.profileDetails .details.isEditing input.error {
+    border: 1px solid red;
+}
+
+.profileDetails .details.isEditing p.error {
+    color: red;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.profileDetails .details.isEditing select,
+.profileDetails .details.isEditing input {
+    width: 100%;
+    padding: 10px;
+    color: #545454;
+    background-color: #cccccc;
+    border: 1px solid #333333;
+}
+
+.profileDetails .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.profileDetails .buttons button {
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    background-color: transparent;
+    padding: 10px 40px;
+    border: none;
+    border: 1px solid #333333;
+}
+
+.profileDetails .buttons button:hover {
+    color: #ffffff;
+    background-color: #757575;
+    border: 1px solid #757575;
+}
+
+.pageFooter {
+    position: fixed;
+    bottom: 20px;
+}
+
+.pageFooter p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Media Queries for mobile responsiveness */
+@media (max-width: 768px) {
+    .pageWrapper {
+        padding: 20px;
+        height: 100%;
+    }
+
+    .pageHeader {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .pageContainer {
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 10px;
+    }
+
+    .pageContainer .pageContent {
+        width: 100%;
+    }
+
+    .pageContainer .sidebarMenu {
+        width: 100%;
+        margin: 20px 0px;
+    }
+
+    .pageContainer .sidebarMenu ul li {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .pageContent .profileDetails {
+        display: block;
+    }
+
+    .pageContent .profileDetails .avatar {
+        width: 120px;
+        margin: 10px auto;
+    }
+ 
+    .pageContent .profile h1 {
+        font-size: 24px;
+    }
+
+    .profileDetails .buttons button {
+        width: 100%;
+    }
+
+    .pageFooter {
+        position: relative;
+        bottom: unset;
+        margin-top: 30px;
+    }
+}
+
+/* For very small mobile devices */
+@media (max-width: 480px) {
+    .pageWrapper {
+        height: 100%;
+    }
+
+    .pageHeader .headerLogo {
+        padding: 10px;
+    }
+
+    .pageContent .profileHeading button {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .profileDetails .avatar {
+        text-align: center;
+    }
+
+    .profileDetails .avatar img {
+        width: 70%;
+    }
+
+    .profileDetails .details h4 {
+        font-size: 14px;
+    }
+
+    .profileDetails .details span {
+        font-size: 14px;
+    }
+
+    .profileDetails .details.isEditing select,
+    .profileDetails .details.isEditing input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .profileDetails .buttons button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
