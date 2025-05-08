@@ -1,5 +1,8 @@
 .loginPage {
-    background-color: #b5b0ad;
+    background-image: url('../../../public/my-profile-bg.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     align-content: center;
     align-items: center;
     display: flex;
@@ -77,6 +80,10 @@
     padding: 8px 40px;
     border-radius: 0px;
     border: none;
+}
+
+.loginPageForm .fieldButton button:hover {
+    background-color: #333333;
 }
 
 .loginPageForm .fieldRowLink {

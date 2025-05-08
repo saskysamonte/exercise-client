@@ -9,7 +9,9 @@ import {
 
 import { AuthProvider } from './store/auth-context';
 import PageComponent from './components/PageComponent';
+import HomePage from "./views/HomePage";
 import Login from "./views/Auth/Login";
+import Register from "./views/Auth/Register";
 import NotFound from "./views/NotFound";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -33,8 +35,9 @@ function App() {
     <AuthProvider accessToken={accessToken} refreshToken={refreshToken}>
       <Router>
         <Routes>
+          <Route path="/" element={<HomePage />} /> 
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/:page" element={<PageWrapper />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -48,7 +51,7 @@ const PageWrapper = () => {
   const { page } = useParams();
   const navigate = useNavigate();
 
-  const validPages = ["home", "profile", "login", "register"]; 
+  const validPages = ["/", "home", "profile", "login", "register"]; 
 
   useEffect(() => {
     const token = Cookies.get("APP-ACCESS-TOKEN");
@@ -105,7 +108,7 @@ const PageWrapper = () => {
   }
 
   if (page === "register") {
-    return <Login />;
+    return <Register />;
   }
 
   if (!validPages.includes(page)) {

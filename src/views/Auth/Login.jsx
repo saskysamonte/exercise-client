@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
-import classes from "./Login.module.css";
+import classes from "./LoginRegister.module.css";
 
 const SALT_KEY = process.env.REACT_APP_SALT_KEY;
 
@@ -19,11 +19,11 @@ export default function Login() {
   });
 
   const { isSubmitting } = useFormState({ control });
-  const [csrfToken, setCsrfToken] = useState(null);
   const [loginMessage, setLoginMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
+    // Check if user is already logged in
     const isLoggedIn = Cookies.get("APP-IS-LOGGED-IN");
     const storedLogin = Cookies.get("REMEMBERED-LOGIN");
     const storedPassword = Cookies.get("REMEMBERED-PASSWORD");
@@ -34,6 +34,7 @@ export default function Login() {
       return;
     }
 
+    // Handle remembered login credentials
     if (storedLogin && storedPassword && expiration) {
       const now = Date.now();
       if (now < parseInt(expiration, 10)) {
@@ -43,24 +44,12 @@ export default function Login() {
         setValue("password", decryptedPassword);
         setValue("rememberMe", true);
       } else {
-        // Expired – clear cookie
+        // Clear expired cookies
         Cookies.remove("REMEMBERED-LOGIN");
         Cookies.remove("REMEMBERED-PASSWORD");
         Cookies.remove("REMEMBERED-EXPIRES");
       }
     }
-
-    const fetchCsrfToken = async () => {
-      try {
-        const res = await axios.get(process.env.REACT_APP_API_USER_CSRF_TOKEN, {
-          withCredentials: true,
-        });
-        setCsrfToken(res.data.csrfToken);
-      } catch (error) {
-        console.error("CSRF token fetch failed", error);
-      }
-    };
-    fetchCsrfToken();
   }, [navigate, setValue]);
 
   const encryptData = (data) => CryptoJS.AES.encrypt(data, SALT_KEY).toString();
@@ -71,7 +60,8 @@ export default function Login() {
   };
 
   const onSubmit = async ({ login, password, rememberMe }) => {
-    setLoginMessage("");
+    setLoginMessage("");  // Reset login message on submit
+
     if (!login || !password) {
       setLoginMessage("Please enter your User ID and password");
       return;
@@ -81,14 +71,9 @@ export default function Login() {
       const response = await axios.post(
         process.env.REACT_APP_API_USER_LOGIN,
         { login, password },
-        {
-          headers: {
-            "X-CSRF-Token": csrfToken,
-          },
-          withCredentials: true,
-        }
       );
 
+      // Save tokens in cookies
       Cookies.set("APP-ACCESS-TOKEN", response.data.accessToken, {
         expires: 1 / 24, // 1 hour
         path: "/",
@@ -110,6 +95,7 @@ export default function Login() {
         sameSite: "Strict",
       });
 
+      // Store login details for 'remember me' functionality
       if (rememberMe) {
         const oneYearFromNow = Date.now() + 365 * 24 * 60 * 60 * 1000; // 1 year in ms
         Cookies.set("REMEMBERED-LOGIN", encryptData(login), {
@@ -131,18 +117,23 @@ export default function Login() {
           sameSite: "Strict",
         });
       } else {
+        // Clear remembered login details if not selected
         Cookies.remove("REMEMBERED-LOGIN");
         Cookies.remove("REMEMBERED-PASSWORD");
         Cookies.remove("REMEMBERED-EXPIRES");
       }
+
       navigate("/profile");
     } catch (error) {
       console.error("Error logging in:", error);
-      // Attempt to extract a message from the server
+      
+      // Handle specific error messages
       const serverMessage =
         error.response?.data?.message ||
         error.response?.data?.error ||
         "Login failed. Please try again.";
+      
+      // Show error message based on the response
       setLoginMessage(serverMessage);
     }
   };
@@ -167,7 +158,7 @@ export default function Login() {
                 name="login"
                 control={control}
                 render={({ field }) => (
-                  <input type="text" className="" placeholder="" {...field} />
+                  <input type="text" placeholder="Enter your User ID" {...field} />
                 )}
               />
             </div>
@@ -182,7 +173,7 @@ export default function Login() {
                 render={({ field }) => (
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder=""
+                    placeholder="Enter your password"
                     autoComplete="on"
                     {...field}
                   />
