@@ -70,7 +70,7 @@ export default function Register() {
       <div className={classes.loginPage}>
         <div className={classes.loginPageHeader}>
           <h2>
-            Welcome to <span className={classes.highlight}>myApps</span>
+            Welcome to <span className={classes.highlight}>myApp</span>
           </h2>
         </div>
 
