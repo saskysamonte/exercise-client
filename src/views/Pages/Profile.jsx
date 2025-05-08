@@ -221,40 +221,50 @@ export default function Profile({ activeMenu }) {
 
   const handleSave = async () => {
     const newErrors = {};
-    if (!profileData.salutation) {
-      newErrors.salutation = "Please select your salutation";
+  
+    // Check validation based on activeMenu
+    if (activeMenu === "basic") {
+      if (!profileData.salutation) {
+        newErrors.salutation = "Please select your salutation";
+      }
+  
+      if (!profileData.first_name) {
+        newErrors.first_name = "Please enter your first name";
+      }
+  
+      if (!profileData.last_name) {
+        newErrors.last_name = "Please enter your last name";
+      }
+  
+      if (!profileData.email_address) {
+        newErrors.email_address = "Please enter your email address";
+      }
     }
-
-    if (!profileData.first_name) {
-      newErrors.first_name = "Please enter your first name";
+  
+    if (activeMenu === "additional") {
+      if (!profileData.gender) {
+        newErrors.gender = "Please select your gender";
+      }
+  
+      if (!profileData.date_of_birth) {
+        newErrors.date_of_birth = "Please enter your date of birth";
+      }
     }
-
-    if (!profileData.last_name) {
-      newErrors.last_name = "Please enter your last name";
+  
+    if (activeMenu === "spouse") {
+      if (!profileData.marital_status) {
+        newErrors.marital_status = "Please select your marital status";
+      }
     }
-
-    if (!profileData.email_address) {
-      newErrors.email_address = "Please enter your email address";
-    }
-
-    if (!profileData.gender) {
-      newErrors.gender = "Please select your gender";
-    }
-
-    if (!profileData.date_of_birth) {
-      newErrors.date_of_birth = "Please enter your date of birth";
-    }
-
-    if (!profileData.marital_status) {
-      newErrors.marital_status = "Please select your marital status";
-    }
-
+  
+    // If there are errors, show them and stop the save
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
+  
     try {
+      // Only update the fields that were edited for the current section
       await axios.put(
         `${process.env.REACT_APP_API_USER_PROFILE}`,
         profileData,
