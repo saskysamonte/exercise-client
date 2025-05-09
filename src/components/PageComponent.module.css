@@ -54,7 +54,13 @@
     border-bottom: 1px solid #333333;
 }
 
-.pageHeader .menuItems li:hover {
+.pageHeader .menuItems li a {
+    color: #333333;
+    text-decoration: none;
+}
+
+.pageHeader .menuItems li:hover,
+.pageHeader .menuItems li a:hover {
     color: #ffffff;
     background-color: #333333;
 }

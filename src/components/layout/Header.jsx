@@ -11,9 +11,9 @@ export default function Header() {
   };
 
   const handleLogout = () => {
-    Cookies.remove("APP-IS-LOGGED-IN");
-    Cookies.remove("APP-ACCESS-TOKEN");
-    Cookies.remove("APP-REFRESH-TOKEN");
+    Cookies.remove("app-is-logged-in");
+    Cookies.remove("app-access-token");
+    Cookies.remove("app-refresh-token");
     navigate("/login");
   };
 
@@ -44,7 +44,6 @@ export default function Header() {
         <ul className={classes.menuItems}>
           <li><a href="/">Home</a></li>
           <li><a href="/profile">My Profile</a></li>
-          <li></li>
           <li onClick={handleLogout} className={classes.logoutButton}>
             Logout
           </li>

@@ -302,6 +302,7 @@ export default function Profile({ activeMenu }) {
               handleInputChange("home_address.city", e.target.value)
             }
           />
+          
           {errors.city && <p className={classes.error}>{errors.city}</p>}
 
           <input
