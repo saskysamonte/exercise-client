@@ -42,9 +42,9 @@ export default function Header() {
 
       <div className={`${classes.slideMenu} ${isMenuOpen ? classes.open : ""}`}>
         <ul className={classes.menuItems}>
-          <li>Home</li>
-          <li>My Profile</li>
-          <li>Edit Profile</li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/profile">My Profile</a></li>
+          <li></li>
           <li onClick={handleLogout} className={classes.logoutButton}>
             Logout
           </li>
