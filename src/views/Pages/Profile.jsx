@@ -170,7 +170,7 @@ export default function Profile({ activeMenu }) {
           )}
         </>
       ) : (
-        <span>{capitalizeString(profileData.first_name)}</span>
+        <span>{capitalizeString(profileData?.first_name)}</span>
       )}
 
       <h4>Last name*</h4>
@@ -377,7 +377,7 @@ export default function Profile({ activeMenu }) {
             placeholder="Spouse First Name"
             value={profileData.spouse.first_name || ""}
             onChange={(e) =>
-              handleInputChange("spouse.first_name", e.target.value)
+              handleInputChange("spouse?.first_name", e.target.value)
             }
           />
           {errors.spouse_first_name && (
@@ -398,11 +398,11 @@ export default function Profile({ activeMenu }) {
         </>
       ) : (
         <span>
-          {profileData.spouse.first_name
+          {profileData?.spouse?.first_name
             ? `${
                 capitalizeString(profileData.spouse.salutation) + "." || ""
-              } ${capitalizeString(profileData.spouse.first_name)} ${
-                capitalizeString(profileData.spouse.last_name) || ""
+              } ${capitalizeString(profileData.spouse?.first_name)} ${
+                capitalizeString(profileData.spouse?.last_name) || ""
               }`
             : "Not specified"}
         </span>
@@ -419,7 +419,7 @@ export default function Profile({ activeMenu }) {
         "..."
       ) : isEditing ? (
         <>
-          {profileData.personal_preferences.hobbies.map((hobby, index) => (
+          {profileData.personal_preferences?.hobbies?.map((hobby, index) => (
             <div key={index} className={classes.preferenceItems}>
               <input
                 className={errors.hobbies && classes.error}
@@ -446,7 +446,7 @@ export default function Profile({ activeMenu }) {
         </>
       ) : (
         <span>
-          {profileData.personal_preferences.hobbies.length
+          {profileData?.personal_preferences?.hobbies.length
             ? profileData.personal_preferences.hobbies.join(", ")
             : "Not specified"}
         </span>
@@ -457,7 +457,7 @@ export default function Profile({ activeMenu }) {
         "..."
       ) : isEditing ? (
         <>
-          {profileData.personal_preferences.interests.map((interest, index) => (
+          {profileData.personal_preferences?.interests?.map((interest, index) => (
             <div key={index} className={classes.preferenceItems}>
               <input
                 className={errors.interests && classes.error}
@@ -486,7 +486,7 @@ export default function Profile({ activeMenu }) {
         </>
       ) : (
         <span>
-          {profileData.personal_preferences.interests.length
+          {profileData.personal_preferences?.interests?.length
             ? profileData.personal_preferences.interests.join(", ")
             : "Not specified"}
         </span>
@@ -497,7 +497,7 @@ export default function Profile({ activeMenu }) {
         "..."
       ) : isEditing ? (
         <>
-          {profileData.personal_preferences.sports.map((sport, index) => (
+          {profileData.personal_preferences?.sports?.map((sport, index) => (
             <div key={index} className={classes.preferenceItems}>
               <input
                 className={errors.sports && classes.error}
@@ -524,7 +524,7 @@ export default function Profile({ activeMenu }) {
         </>
       ) : (
         <span>
-          {profileData.personal_preferences.sports.length
+          {profileData.personal_preferences?.sports?.length
             ? profileData.personal_preferences.sports.join(", ")
             : "Not specified"}
         </span>
@@ -536,7 +536,7 @@ export default function Profile({ activeMenu }) {
         "..."
       ) : isEditing ? (
         <>
-          {profileData.personal_preferences.musics.map((music, index) => (
+          {profileData.personal_preferences?.musics?.map((music, index) => (
             <div key={index} className={classes.preferenceItems}>
               <input
                 className={errors.musics && classes.error}
@@ -563,7 +563,7 @@ export default function Profile({ activeMenu }) {
         </>
       ) : (
         <span>
-          {profileData.personal_preferences.musics.length
+          {profileData.personal_preferences?.musics?.length
             ? profileData.personal_preferences.musics.join(", ")
             : "Not specified"}
         </span>
@@ -574,7 +574,7 @@ export default function Profile({ activeMenu }) {
         "..."
       ) : isEditing ? (
         <>
-          {profileData.personal_preferences.movies.map((movie, index) => (
+          {profileData.personal_preferences?.movies?.map((movie, index) => (
             <div key={index} className={classes.preferenceItems}>
               <input
                 className={errors.movies && classes.error}
@@ -601,7 +601,7 @@ export default function Profile({ activeMenu }) {
         </>
       ) : (
         <span>
-          {profileData.personal_preferences.movies.length
+          {profileData.personal_preferences?.movies?.length
             ? profileData.personal_preferences.movies.join(", ")
             : "Not specified"}
         </span>
