@@ -48,7 +48,31 @@ export default function Profile({ activeMenu }) {
 
   useEffect(() => {
     if (profile) {
-      setProfileData(profile);
+      setProfileData({
+        ...profile,
+        home_address: {
+          street: "",
+          city: "",
+          state: "",
+          postal_code: "",
+          country: "",
+          ...(profile.home_address || {}),
+        },
+        spouse: {
+          salutation: "",
+          first_name: "",
+          last_name: "",
+          ...(profile.spouse || {}),
+        },
+        personal_preferences: {
+          hobbies: [],
+          interests: [],
+          sports: [],
+          musics: [],
+          movies: [],
+          ...(profile.personal_preferences || {}),
+        },
+      });
       setOriginalProfileData(profile);
     }
   }, [profile]);
@@ -643,31 +667,31 @@ export default function Profile({ activeMenu }) {
     }
 
     if (activeMenu === "spouse") {
-      if (!profileData.spouse.salutation) {
+      if (!profileData.spouse?.salutation) {
         newErrors.spouse_salutation = "Please select spouse's salutation";
       }
-      if (!profileData.spouse.first_name) {
+      if (!profileData.spouse?.first_name) {
         newErrors.spouse_first_name = "Please enter spouse's first name";
       }
-      if (!profileData.spouse.last_name) {
+      if (!profileData.spouse?.last_name) {
         newErrors.spouse_last_name = "Please enter spouse's last name";
       }
     }
 
     if (activeMenu === "preferences") {
-      if (profileData.personal_preferences.hobbies.length === 0) {
+      if (profileData?.personal_preferences.hobbies?.length === 0) {
         newErrors.hobbies = "Please add at least one hobby";
       }
-      if (profileData.personal_preferences.interests.length === 0) {
+      if (profileData?.personal_preferences.interests?.length === 0) {
         newErrors.interests = "Please add at least one interest";
       }
-      if (profileData.personal_preferences.sports.length === 0) {
+      if (profileData?.personal_preferences.sports?.length === 0) {
         newErrors.sports = "Please add at least one sport";
       }
-      if (profileData.personal_preferences.musics.length === 0) {
+      if (profileData?.personal_preferences.musics?.length === 0) {
         newErrors.musics = "Please add at least one music";
       }
-      if (profileData.personal_preferences.movies.length === 0) {
+      if (profileData?.personal_preferences.movies?.length === 0) {
         newErrors.movies = "Please add at least one movie";
       }
     }
