@@ -5,7 +5,7 @@ export const AuthProvider = ({ children, accessToken, refreshToken }) => {
     const headers = useMemo(() => ({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
-        'APP-REFRESH-TOKEN': refreshToken,
+        'app-refresh-token': refreshToken,
     }), [accessToken, refreshToken]);
 
     return (

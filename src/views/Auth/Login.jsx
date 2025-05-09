@@ -24,10 +24,10 @@ export default function Login() {
 
   useEffect(() => {
     // Check if user is already logged in
-    const isLoggedIn = Cookies.get("APP-IS-LOGGED-IN");
-    const storedLogin = Cookies.get("REMEMBERED-LOGIN");
-    const storedPassword = Cookies.get("REMEMBERED-PASSWORD");
-    const expiration = Cookies.get("REMEMBERED-EXPIRES");
+    const isLoggedIn = Cookies.get("app-is-logged-in");
+    const storedLogin = Cookies.get("remembered-login");
+    const storedPassword = Cookies.get("remembered-password");
+    const expiration = Cookies.get("remembered-expires");
 
     if (isLoggedIn === "true") {
       navigate("/profile");
@@ -45,9 +45,9 @@ export default function Login() {
         setValue("rememberMe", true);
       } else {
         // Clear expired cookies
-        Cookies.remove("REMEMBERED-LOGIN");
-        Cookies.remove("REMEMBERED-PASSWORD");
-        Cookies.remove("REMEMBERED-EXPIRES");
+        Cookies.remove("remembered-login");
+        Cookies.remove("remembered-password");
+        Cookies.remove("remembered-expires");
       }
     }
   }, [navigate, setValue]);
@@ -74,21 +74,21 @@ export default function Login() {
       );
 
       // Save tokens in cookies
-      Cookies.set("APP-ACCESS-TOKEN", response.data.accessToken, {
+      Cookies.set("app-access-token", response.data.accessToken, {
         expires: 1 / 24, // 1 hour
         path: "/",
         secure: true,
         sameSite: "Strict",
       });
 
-      Cookies.set("APP-REFRESH-TOKEN", response.data.refreshToken, {
+      Cookies.set("app-refresh-token", response.data.refreshToken, {
         expires: 1, // 1 day
         path: "/",
         secure: true,
         sameSite: "Strict",
       });
 
-      Cookies.set("APP-IS-LOGGED-IN", "true", {
+      Cookies.set("app-is-logged-in", "true", {
         expires: 1 / 24, // 1 hour
         path: "/",
         secure: true,
@@ -98,19 +98,19 @@ export default function Login() {
       // Store login details for 'remember me' functionality
       if (rememberMe) {
         const oneYearFromNow = Date.now() + 365 * 24 * 60 * 60 * 1000; // 1 year in ms
-        Cookies.set("REMEMBERED-LOGIN", encryptData(login), {
+        Cookies.set("remembered-login", encryptData(login), {
           expires: 365,
           path: "/",
           secure: true,
           sameSite: "Strict",
         });
-        Cookies.set("REMEMBERED-PASSWORD", encryptData(password), {
+        Cookies.set("remembered-password", encryptData(password), {
           expires: 365,
           path: "/",
           secure: true,
           sameSite: "Strict",
         });
-        Cookies.set("REMEMBERED-EXPIRES", oneYearFromNow, {
+        Cookies.set("remembered-expires", oneYearFromNow, {
           expires: 365,
           path: "/",
           secure: true,
@@ -118,9 +118,9 @@ export default function Login() {
         });
       } else {
         // Clear remembered login details if not selected
-        Cookies.remove("REMEMBERED-LOGIN");
-        Cookies.remove("REMEMBERED-PASSWORD");
-        Cookies.remove("REMEMBERED-EXPIRES");
+        Cookies.remove("remembered-login");
+        Cookies.remove("remembered-password");
+        Cookies.remove("remembered-expires");
       }
 
       navigate("/profile");
